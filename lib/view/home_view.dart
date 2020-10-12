@@ -4,15 +4,31 @@ import 'package:lottie/lottie.dart';
 import '../viewModel/home_view_model.dart';
 
 class HomeView extends HomeViewModel {
+
+  List<String> months=[
+    "Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"
+  ];
   @override
   Widget build(BuildContext context) {
     // Replace this with your build function
     return Scaffold(
-      body: Column(
-        children: [
-          topCard(context),
-          listViewUI(),
-        ],
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.black54,
+      body: SingleChildScrollView(
+              child: Column(
+          children: [
+            topCard(context),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                
+                child: Text("2020",style: TextStyle(fontSize: 32,color: Colors.white),),
+              ),
+            ),
+            listViewUI(),
+          ],
+        ),
       ),
     );
   }
@@ -101,15 +117,35 @@ class HomeView extends HomeViewModel {
         });
   }
 
+
+
   ListTile listTileWidget(AsyncSnapshot<Weather> snapshot, int a) {
     return ListTile(
       title: Text(
-          "Tarih : " + snapshot.data.consolidatedWeather[a].applicableDate),
+          "Tarih : " + getDay(snapshot, a) + " " + months[int.parse(getMonth(snapshot, a))-1]),
       subtitle:
           Text(snapshot.data.consolidatedWeather[a].theTemp.toStringAsFixed(1)),
       trailing: Image.network(
           "https://www.metaweather.com/static/img/weather/png/${snapshot.data.consolidatedWeather[a].weatherStateAbbr}.png"),
     );
+  }
+
+  String getDay(AsyncSnapshot<Weather> snapshot, int a){
+    var date = snapshot.data.consolidatedWeather[a].applicableDate;
+    String day  = date.substring(date.length - 2);
+    return day;
+  }
+
+  String getMonth(AsyncSnapshot<Weather> snapshot, int a){
+    var date = snapshot.data.consolidatedWeather[a].applicableDate;
+    String month = date.substring(5,7);
+    return month;
+  }
+
+  String getYear(AsyncSnapshot<Weather> snapshot, int a){
+    var date = snapshot.data.consolidatedWeather[a].applicableDate;
+    String year = date.substring(0,4);
+    return year;
   }
 }
 

@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.latoTextTheme(
           Theme.of(context).textTheme,
         ),
+        
       ),
       debugShowCheckedModeBanner: false,
       title: 'Material App',
